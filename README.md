@@ -1,73 +1,38 @@
-🛒 E-Commerce & Office Automation Web App
+# 🛒 E-Commerce & Office Automation Web App
 
-A full-stack web application for online shopping and office automation, supporting user accounts, product management, cart functionality, order processing, and admin management. Built using PHP and MySQL with a focus on secure authentication and clean backend logic.
+A web application for online shopping and office automation, featuring user accounts, product management, cart functionality, and order processing. Built with **PHP & MySQL**.
 
-🚀 Features
+---
 
-User registration and login system
+## 🚀 Features
+- User registration, login, and Google OAuth  
+- Password reset & recovery  
+- Browse, search, and manage products  
+- Add/update/remove cart items  
+- Place and track orders  
+- Admin panel to manage products & orders  
 
-Google OAuth login integration
+---
 
-Password reset and recovery
+## 🛠 Tech Stack
+- PHP | MySQL | HTML5 | CSS3 | JavaScript  
+- PHPMailer for email notifications  
 
-Browse and search products
+---
 
-Add, remove, and update cart items
+## ⚙️ Setup
+1. Install **XAMPP/WAMP**  
+2. Move project to `htdocs`  
+3. Import `/sql/b22_39801860_main.sql` & `/sql/id21724899_user.sql`  
+4. Update DB credentials in PHP files  
+5. Run `http://localhost/index.html`  
 
-Place and track orders
+---
 
-Admin panel for product & order management
+## 👨‍💻 Developer
+**Salman Shaikh** | Mumbai, India  
+- [GitHub](https://github.com/your-username)  
+- [Portfolio](http://sport.byethost32.com)  
+- [LinkedIn](https://www.linkedin.com/in/shaikh-salman-baa1293a3)  
 
-🔐 Security
-
-Password hashing
-
-Session-based authentication
-
-Input validation to prevent SQL injection
-
-🛠 Tech Stack
-
-PHP
-
-MySQL
-
-JavaScript
-
-HTML5
-
-CSS3
-
-🗄 Database
-
-MySQL relational database
-
-SQL schema included (/sql/b22_39801860_main.sql and /sql/id21724899_user.sql)
-
-⚙️ Setup Instructions
-
-Install XAMPP / WAMP
-
-Move project to htdocs
-
-Import SQL files into phpMyAdmin
-
-Configure database credentials in PHP files:
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "your_database_name";
-
-
-Run http://localhost/index.html in your browser
-
-👨‍💻 Developed By
-
-Salman Shaikh
-📍 Mumbai, India
-🔗 GitHub
-
-🔗 Portfolio
-
-🔗 LinkedIn
+---
