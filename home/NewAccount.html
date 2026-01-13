@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" type="image/x-icon" href="/tablogo.png">
+  <style>
+    .create-account-container {
+      margin-top: 5%;
+    }
+#g_id_onload, .g_id_signin {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+    .form-text{
+        color:red;
+    }
+    .error {
+      border-color: red;
+    }
+    .position-relative {
+      position: relative;
+    }
+
+    .password-toggle {
+      background-color: white;
+      border: none;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 1; /* Ensure the icon is above the input field */
+    }
+  </style>
+</head>
+<body style="background-color: black;">
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-sm-8 col-10" style="background-color: white;margin:30px auto;border:10px solid white;border-radius:10px!important">
+      <div class="create-account-container">
+        <div class="text-center mb-4">
+            <h2>Create Account</h2>
+        </div>
+        <form id="createAccountForm" style="padding-bottom: 10px;" action="newaccount.php" method="post">
+          <div class="form-group">
+            <label for="inputPhone" class="form-label">Phone no</label>
+            <input type="number" id="inputPhone" name="phone" placeholder="Enter phone no" class="form-control" aria-describedby="phoneHelpBlock" required>
+            <div id="phoneHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" onchange="cap()" class="form-control" id="fullname" name="fullname" placeholder="Enter full name" required>
+            <div id="fullnameHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="inputEmail" class="form-label">Email</label>
+            <input type="email" id="inputEmail" placeholder="Enter email" name="email" class="form-control" aria-describedby="emailHelpBlock" required>
+            <div id="emailHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="inputUsername" class="form-label">Username</label>
+            <input type="text" id="inputUsername" placeholder="Enter username" name="username" class="form-control" aria-describedby="usernameHelpBlock" required>
+            <div id="usernameHelpBlock" class="form-text"></div>
+            <div id="usernameValidBlock" class="form-text"></div>
+          </div>
+          <div class="form-group position-relative">
+            <label for="inputPassword" class="form-label">Password</label>
+            <div class="input-group">
+                <input type="password" name="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock" required>
+                <span class="input-group-append">
+                    <button class="input-group-text password-toggle" onclick="togglePasswordVisibility()" type="button"><i id="eyeIcon" class="fas fa-eye"></i></button>
+                </span>
+            </div>
+            <div id="passwordHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="address">Address:</label>
+            <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter address" required></textarea>
+            <div id="addressHelpBlock" class="form-text"></div>
+          </div>
+          <center><h6 style="padding:10px">Already Have an Account? <a href="login.html">Login here</a></h6></center>
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+         <div style="text-align:center; margin:20px 0;">
+          <div id="g_id_onload"
+               data-client_id="523383009766-827vl2sd1blo2sap2qo5ron7044evodl.apps.googleusercontent.com"
+               data-callback="handleCredentialResponse"
+               data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin"
+               data-type="standard"
+               data-size="large"
+               data-theme="outline"
+               data-text="sign_in_with"
+               data-shape="rectangular"
+               data-logo_alignment="left">
+          </div>
+        </div>
+      </div>
+       <div class="card footer" style="background-color:white;border:none;font-size:20px">
+            <div class="card-body">
+            <footer class="blockquote-footer">
+                <div class="footer-logo"><img src="blacklogo.png" alt="logo" style="width:150px;">
+                </div>
+                <div class="copyright">© 2023 Asmi Enterprises</div>
+            </footer> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
+<script>
+  function togglePasswordVisibility() {
+    var passwordField = document.getElementById("inputPassword");
+    var eyeIcon = document.getElementById("eyeIcon");
+    
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        eyeIcon.className = "fas fa-eye-slash";
+    } else {
+        passwordField.type = "password";
+        eyeIcon.className = "fas fa-eye";
+    }
+}
+
+function cap() {
+    document.getElementById('fullname').value=document.getElementById('fullname').value.toUpperCase();
+}
+
+document.getElementById('createAccountForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Validate form fields
+    var valid = validateForm();
+
+    if (valid) {
+        // If form is valid, check username availability
+        checkUsernameAvailability();
+    }
+});
+
+function validateForm() {
+    // Resetting errors
+    document.querySelectorAll('.error').forEach(element => {
+        element.classList.remove('error');
+    });
+    document.querySelectorAll('.form-text').forEach(element => {
+        element.textContent = '';
+    });
+
+    // Validation logic for each form field
+    var phone = document.getElementById('inputPhone').value;
+    var phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+        document.getElementById('inputPhone').classList.add('error');
+        document.getElementById('phoneHelpBlock').textContent = 'Please enter a valid phone number.';
+        return false;
+    }
+
+    var fullname = document.getElementById('fullname').value;
+    if (fullname.length < 6) {
+        document.getElementById('fullname').classList.add('error');
+        document.getElementById('fullnameHelpBlock').textContent = 'Name should be at least 6 characters long.';
+        return false;
+    }
+
+    var email = document.getElementById('inputEmail').value;
+    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+        document.getElementById('inputEmail').classList.add('error');
+        document.getElementById('emailHelpBlock').textContent = 'Please enter a valid email address.';
+        return false;
+    }
+
+    var username = document.getElementById('inputUsername').value;
+    var usernameRegex = /^[A-Z][a-zA-Z0-9_]*$/;
+    if (!usernameRegex.test(username)) {
+        document.getElementById('inputUsername').classList.add('error');
+        document.getElementById('usernameHelpBlock').textContent = 'Username should start with an uppercase letter and contain only letters ,underscores and digits.';
+        return false;
+    }
+
+    var password = document.getElementById('inputPassword').value;
+    if (password.length < 8) {
+        document.getElementById('inputPassword').classList.add('error');
+        document.getElementById('passwordHelpBlock').textContent = 'Password must be at least 8 characters long.';
+        return false;
+    }
+
+    var address = document.getElementById('address').value;
+    if (address.length < 15) {
+        document.getElementById('address').classList.add('error');
+        document.getElementById('addressHelpBlock').textContent = 'Address should be at least 15 characters long.';
+        return false;
+    }
+
+    return true; // Return true if all validations pass
+}
+
+function checkUsernameAvailability() {
+    var xhr = new XMLHttpRequest();
+    var username = document.getElementById('inputUsername').value;
+    xhr.open('GET', 'uservalid.php?username=' + encodeURIComponent(username), true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Handle response from PHP script
+                if (xhr.responseText === "Username not available") {
+                    document.getElementById('inputUsername').classList.add('error');
+                    document.getElementById('usernameValidBlock').textContent = 'Username not available';
+                } else if (xhr.responseText === "Available") {
+                    document.getElementById('inputUsername').classList.remove('error');
+                    document.getElementById('usernameValidBlock').textContent = '';
+                    // If username is available, submit the form
+                    document.getElementById('createAccountForm').submit();
+                }
+            } else {
+                console.error('Error occurred while fetching the message:', xhr.status);
+            }
+        }
+    };
+    xhr.send();
+}
+</script>
+<script>
+ function handleCredentialResponse(response) { fetch('google-login.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'id_token=' + encodeURIComponent(response.credential) }) .then(res => res.text()) .then(data => { if (data.includes('success')) { window.location.href = 'index.php'; } }) .catch(err => { console.error('Google login error:', err); }); } 
+ </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" type="image/x-icon" href="/tablogo.png">
+  <style>
+    .create-account-container {
+      margin-top: 5%;
+    }
+
+    .form-text{
+        color:red;
+    }
+    .error {
+      border-color: red;
+    }
+    .position-relative {
+      position: relative;
+    }
+
+    .password-toggle {
+      background-color: white;
+      border: none;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 1; /* Ensure the icon is above the input field */
+    }
+  </style>
+</head>
+<body style="background-color: black;">
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-sm-8 col-10" style="background-color: white;margin:30px auto;border:10px solid white;border-radius:10px!important">
+      <div class="create-account-container">
+        <div class="text-center mb-4">
+            <h2>Add Product</h2>
+        </div>
+        <form id="createAccountForm" style="padding-bottom: 10px;" action="addproduct.php" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="price" class="form-label">Product Price</label>
+            <input type="number" id="price" name="price" placeholder="Enter price" class="form-control" aria-describedby="phoneHelpBlock" required>
+            <div id="phoneHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="name">Product Name</label>
+            <input type="text" class="form-control" id="name" name="name" oninput="checkProductNameAvailability()" placeholder="Enter product name" required>
+            <div id="nameHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="image">Product Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+            <div id="imageHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="description">Product description</label>
+             <textarea class="form-control" id="description" name="description" rows="5" ></textarea>
+            <div id="descHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="discount" class="form-label">Discount</label>
+            <input type="number" id="discount" placeholder="Enter discount percentage" name="discount" class="form-control" aria-describedby="usernameHelpBlock" required onchange="calc()">
+            <div id="usernameHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+            <label for="disc_price" class="form-label">Discounted Price</label>
+            <input type="number" id="disc_price" name="disc_price" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label for="cat">Category</label><br>
+            <select id="cat" class="form-control" name="category" required>
+              <option selected disabled value="">Select product category</option>
+              <option value="Laptop & Desktop">Laptop & Desktop</option>
+              <option value="Computer Accessories">Computer Accessories</option>
+              <option value="Anti Virus">Anti Virus</option>
+              <option value="Printers,Routers & Switches">Printers,Routers & Switches</option>
+              <option value="CCTV Services">CCTV Services</option>
+              <option value="Home and Office Automation">Home and Office Automation</option>
+            </select>
+            <div id="categoryHelpBlock" class="form-text"></div>
+          </div>
+          <div class="form-group">
+  <label for="stock">Stock Status</label><br>
+  <select id="stock" class="form-control" name="stock" required>
+    <option selected disabled value="">Select stock status</option>
+    <option value="in_stock">In Stock</option>
+    <option value="few_left">Few Left</option>
+    <option value="out_of_stock">Out of Stock</option>
+  </select>
+  <div id="stockHelpBlock" class="form-text"></div>
+</div>
+
+          <button onclick="validateForm()" type="button" class="btn btn-primary btn-block">Add Product</button>
+        </form>
+      </div>
+       <div class="card footer text-center" style="background-color:white; border:none; font-size:20px">
+  <div class="card-body">
+    <footer class="blockquote-footer">
+      <div class="footer-logo mb-2">
+        <img src="blacklogo.png" alt="logo" style="width:150px;">
+      </div>
+      <div class="copyright">
+        © 2023 Asmi Enterprises
+      </div>
+    </footer>
+  </div>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+// Function to check product name availability
+function checkProductNameAvailability() {
+    var xhr = new XMLHttpRequest();
+    var name = document.getElementById('name').value;
+    var nameHelpBlock = document.getElementById('nameHelpBlock');
+
+    xhr.open('POST', 'productvalid.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Handle response from PHP script
+                if (xhr.responseText === "Product already exists") {
+                    nameHelpBlock.innerHTML = 'Product with this name already exists';
+                } else if (xhr.responseText === "Available") {
+                    nameHelpBlock.innerHTML = '';
+                }
+            } else {
+                console.error('Error occurred while fetching the message:', xhr.status);
+            }
+        }
+    };
+    xhr.send('name=' + encodeURIComponent(name));
+}
+
+// Function to validate the entire form
+function validateForm() {
+    var isValid = true; // Reset validation
+    var price = document.getElementById("price").value;
+    var name = document.getElementById("name").value;
+    var image = document.getElementById("image").value;
+    var discount = document.getElementById("discount").value;
+    var category = document.getElementById("cat").value;
+    var des = document.getElementById("description").value;
+
+    // Reset error messages
+    var priceHelpBlock = document.getElementById("phoneHelpBlock");
+    var nameHelpBlock = document.getElementById("nameHelpBlock");
+    var imageHelpBlock = document.getElementById("imageHelpBlock");
+    var discountHelpBlock = document.getElementById("usernameHelpBlock");
+    var categoryHelpBlock = document.getElementById("categoryHelpBlock");
+    var descHelpBlock = document.getElementById("descHelpBlock");
+
+    // Validate price, description, name, image, discount, and category here as you did before...
+    var stock = document.getElementById("stock").value;
+var stockHelpBlock = document.getElementById("stockHelpBlock");
+
+if (!stock) {
+    stockHelpBlock.innerHTML = "Please select the stock status";
+    isValid = false;
+} else {
+    stockHelpBlock.innerHTML = "";
+}
+
+    if (price.trim() === "") {
+        priceHelpBlock.innerHTML = "Price cannot be empty";
+        isValid = false;
+    } else {
+        priceHelpBlock.innerHTML = "";
+    }
+    if (des.trim() === "" || des.length < 15) {
+        descHelpBlock.innerHTML = "Description cannot be empty and should be at least 15 characters long";
+        isValid = false;
+    } else {
+        descHelpBlock.innerHTML = "";
+    }
+
+    // Validate name
+    if (name.trim() === "" || !/^[A-Z].{7,}$/.test(name)) {
+        nameHelpBlock.innerHTML = "Product name must start with an uppercase letter and be at least 8 characters long.";
+        isValid = false;
+    } else {
+        // Check product name availability only if the name format is valid
+        checkProductNameAvailability();
+    }
+
+    // Validate image
+    if (image.trim() === "" || !/\.(jpg|jpeg|png|gif)$/.test(image)) {
+        imageHelpBlock.innerHTML = "Image name must end with .jpg, .jpeg, .png, or .gif";
+        isValid = false;
+    } else {
+        imageHelpBlock.innerHTML = "";
+    }
+
+    // Validate discount
+    if (discount.trim() === "" || discount < 0 || discount > 90) {
+        discountHelpBlock.innerHTML = "Discount must be between 0 and 90";
+        isValid = false;
+    } else {
+        discountHelpBlock.innerHTML = "";
+    }
+
+    if (category === "Select product category") {
+        categoryHelpBlock.innerHTML = "Please select a category";
+        isValid = false;
+    } else {
+        categoryHelpBlock.innerHTML = "";
+    }
+
+    // If the form is valid, submit it
+    if (isValid) {
+        document.getElementById("createAccountForm").submit();
+    }
+}
+function calc() {
+    var disc_price_element = document.getElementById("disc_price");
+    var price = parseFloat(document.getElementById("price").value);
+    var disc = parseFloat(document.getElementById("discount").value);
+    var val = (price * (100-disc)) / 100;
+    disc_price_element.value = val.toFixed(2); 
+}
+
+</script>
+</body>
+</html>

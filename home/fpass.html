@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" type="image/x-icon" href="/tablogo.png">
+  
+  <style>
+    .login-container {
+      margin-top: 5%;
+      position: relative; /* Ensure positioning relative to the container */
+    }
+
+    .password-toggle {
+        background-color:white;
+        border:none;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  </style>
+  
+</head>
+<body style="background-color: black;">
+<div class="container" style="margin-top:5%;">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-sm-8 col-10" style="background-color: white;border:10px solid white;border-radius:10px!important">
+      <div class="login-container">
+        <div class="text-center mb-4">
+          <h2>Forgot Password</h2>
+        </div>
+<form action="fpass.php" style="padding-bottom: 10px;" method="post" >
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <div class="input-group">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter registered email" required>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Get recovery link</button>
+</form>
+             <div class="card footer" style="background-color:white;border:none;font-size:20px">
+            <div class="card-body">
+            <footer class="blockquote-footer">
+                <div class="footer-logo"><img src="blacklogo.png" alt="logo" style="width:150px;">
+                </div>
+              
+                <div class="copyright">© 2023 Asmi Enterprises</div>
+               
+            </footer> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+function encodePasswordToUnicode(form) 
+{
+    // Get the password input value
+    var password = document.getElementById("password").value;
+
+    var encodedPassword = "";
+
+    // Loop through each character of the password
+    for (var i = 0; i < password.length; i++) {
+        // Get the Unicode code point of the current character
+        var unicodeValue = String.fromCharCode(password.charCodeAt(i)+3);
+        console.log(unicodeValue);
+
+        // Append the Unicode code point to the encoded password string
+        encodedPassword += unicodeValue.toString() + "";
+    }
+    
+    // Set the encoded password back to the password input field
+    document.getElementById("password").value="";
+    document.getElementById("password").value = encodedPassword.trim();
+        form.submit();
+
+    // Prevent default form submission
+    return false;
+}
+
+  function togglePasswordVisibility() {
+    var passwordField = document.getElementById("password");
+    var eyeIcon = document.getElementById("eyeIcon");
+    
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      eyeIcon.className = "fas fa-eye-slash";
+    } else {
+      passwordField.type = "password";
+      eyeIcon.className = "fas fa-eye";
+    }
+  }
+  function captcha()
+{
+const x1="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#&$!?%";
+xy="";
+for(i=1;i<9;i++)
+{
+xy+=x1.charAt(Math.random()*x1.length);
+}
+ document.getElementById("cap").value=xy; 
+}
+    function validateCaptcha() {
+    var captchaInput = document.getElementById("captchaInput").value;
+    var generatedCaptcha = document.getElementById("cap").value;
+
+    if (captchaInput !== generatedCaptcha) {
+        var captchaError = document.getElementById("captchaError");
+        captchaError.textContent = "Captcha does not match. Please try again.";
+        captchaError.style.display = "block";
+        return false; // Prevent form submission
+    }
+//  encodePasswordToUnicode(document.querySelector("form"));
+
+    // Prevent default form submission
+    return true;
+} 
+document.getElementById("cap").addEventListener("copy", function(event) {
+    event.preventDefault();
+});
+document.getElementById("cap").addEventListener("select", function(event) {
+    event.preventDefault();
+});
+</script>
+
+</body>
+</html>
